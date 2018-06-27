@@ -1,0 +1,2 @@
+include 'public', 'customer','management','customer-transaction'
+rootProject.name = 'eventuate-example'

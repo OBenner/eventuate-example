@@ -1,0 +1,45 @@
+plugins {
+	id 'io.franzbecker.gradle-lombok' version '1.13'
+	id 'java-library'
+	id 'maven-publish'
+	id 'maven'
+}
+
+lombok {
+	version = "1.16.20"
+	sha256 = ""
+}
+
+group = 'ru.neoflex'
+version = '0.0.2-SNAPSHOT'
+sourceCompatibility = 1.8
+dependencies {
+	compile("io.eventuate.tram.core:eventuate-tram-commands:${eventuateTramVersion}")
+	testCompile "io.eventuate.tram.core:eventuate-tram-in-memory:$eventuateTramVersion"
+	compile("io.eventuate.tram.core:eventuate-tram-jdbc-kafka:${eventuateTramVersion}")
+	api "io.eventuate.client.java:eventuate-client-java-spring:$eventuateClientVersion"
+
+}
+
+
+repositories {
+	jcenter()
+}
+jar {
+	baseName = 'eventuate-example'
+	appendix = 'public'
+	manifest {
+		attributes(
+				'Implementation-Title': project.name,
+				'Implementation-Version': project.version
+		)
+	}
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+}

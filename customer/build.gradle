@@ -1,0 +1,64 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.0.BUILD-SNAPSHOT'
+	}
+	repositories {
+		mavenCentral()
+		mavenLocal()
+		maven { url "https://repo.spring.io/snapshot" }
+		maven { url "https://repo.spring.io/milestone" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+plugins {
+	id "io.franzbecker.gradle-lombok" version "1.13"
+	id "java"
+	id "org.springframework.boot" version "2.0.1.RELEASE"
+	id 'maven'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'ru.neoflex'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+	jcenter()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+	maven {
+		url "https://dl.bintray.com/eventuateio-oss/eventuate-maven-release"
+	}
+}
+ext {
+	springCloudVersion = 'Finchley.RC1'
+}
+
+dependencies {
+	compile "ru.neoflex:public:0.0.2-SNAPSHOT"
+	compile "io.eventuate.local.java:eventuate-local-java-jdbc:${eventuateLocalVersion}"
+	compile "io.eventuate.client.java:eventuate-client-java:${eventuateClientVersion}"
+	//compile('org.springframework.cloud:spring-cloud-starter-zipkin')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-webflux')
+	compile('org.springframework.boot:spring-boot-starter-jdbc')
+	compile('io.springfox:springfox-swagger2:2.9.0')
+	compile('io.springfox:springfox-swagger-ui:2.9.0')
+	compileOnly('org.projectlombok:lombok')
+	runtime 'mysql:mysql-connector-java:5.1.36'
+	compileOnly "org.springframework.boot:spring-boot-configuration-processor"
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('io.projectreactor:reactor-test')
+}
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+		mavenBom "org.springframework.cloud:spring-cloud-sleuth:2.0.0.RC1"
+	}
+}
